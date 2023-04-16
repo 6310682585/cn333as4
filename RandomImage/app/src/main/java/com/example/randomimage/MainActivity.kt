@@ -3,6 +3,7 @@ package com.example.randomimage
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import coil.compose.rememberImagePainter
 import com.example.randomimage.ui.theme.RandomImageTheme
 
 class MainActivity : ComponentActivity() {
@@ -138,24 +140,57 @@ fun Screen() {
         }
 
 //  submit
-        SubmitValue(selectedCategory, width, height)
+        SubmitValue( width, height,selectedCategory)
     }
 }
 
 
 @Composable
 fun SubmitValue(
-    selectedCategory: String,
+
     width: Int,
-    height: Int
+    height: Int,
+    selectedCategory: String,
+    modifier: Modifier = Modifier,
 ) {
 //    check link
     Text(
-        text = stringResource(R.string.link, selectedCategory, width, height),
+        text = stringResource(R.string.link, width, height, selectedCategory),
         textAlign = TextAlign.Center
     )
+
+    var isDialogVisible by remember { mutableStateOf(false) }
+
+    if (isDialogVisible) {
+        AlertDialog(
+            onDismissRequest = { isDialogVisible = false },
+            title = { Text(text = "Random Image ${width} x ${height} pixels") },
+            text = {
+                Box(
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        modifier = modifier
+                        .width(300.dp)
+                        .height(300.dp),
+                        painter = rememberImagePainter(data = "https://loremflickr.com/${width}/${height}/${selectedCategory}"),
+                        contentDescription = null
+                    )
+                }
+            },
+            confirmButton = {
+                Button(onClick = { isDialogVisible = false }) {
+                    Text(text = "OK")
+                }
+            }
+        )
+    }
+
     if (selectedCategory != " ") {
-        Button(onClick = { /*TODO*/ }) {
+        Button(onClick = {
+            isDialogVisible = true
+        },
+            modifier = Modifier.padding(16.dp)) {
             Text(
                 text = stringResource(R.string.submit),
                 fontSize = 15.sp

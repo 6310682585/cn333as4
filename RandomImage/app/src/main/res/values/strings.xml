@@ -2,7 +2,7 @@
     <string name="app_name">RandomImage</string>
     <string name="width">width: %s pixels</string>
     <string name="height">height: %s pixels</string>
-    <string name="link">go to:\nhttps://api.lorem.space/image/%s?w=%s&amp;h=%s</string>
+    <string name="link">go to:\nhttps://loremflickr.com/%s/%s/%s</string>
     <string name="submit">submit</string>
     <string name="notSelect">please choose category</string>
 </resources>
